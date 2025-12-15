@@ -18,7 +18,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "google-crc32c"
-version = "1.7.1"
+version = "1.8.0"
 description = "A python wrapper of the C library 'Google CRC32C'"
 readme = "README.md"
 requires-python = ">=3.9"
