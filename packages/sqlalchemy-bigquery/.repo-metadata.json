@@ -9,5 +9,5 @@
     "distribution_name": "sqlalchemy-bigquery",
     "api_id": "bigquery.googleapis.com",
     "default_version": "",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/python-core-client-libraries"
 }
