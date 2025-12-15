@@ -1,7 +1,8 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:97c3041de740f26b132d3c5d43f0097f990e8b0d1f2e6707054840024c20ab0c
 libraries:
   - id: google-cloud-ndb
-    version: 2.3.4
+    version: 2.4.0
+    last_generated_commit: ""
     apis: []
     source_roots:
       - .
