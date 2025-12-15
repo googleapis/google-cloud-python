@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.17.1...sqlalchemy-spanner-v1.17.2) (2025-12-15)
+
+
+### Bug Fixes
+
+* Retrieve columns in compound indexes in correct order (#798) ([9afe49bb720356c58890931c17546650ffd61f88](https://github.com/googleapis/google-cloud-python/commit/9afe49bb720356c58890931c17546650ffd61f88))
+
 ## [1.17.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.17.0...v1.17.1) (2025-10-21)
 
 
